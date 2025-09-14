@@ -8,10 +8,10 @@ public class SQLServerConnection {
         try (Connection conn = DriverManager.getConnection(URL);
              Scanner scanner = new Scanner(System.in)) {
 
-            System.out.println("Connected to SQL Server using Windows Authentication!");
+            System.out.println("Connected to SQL Server");
 
             while (true) {
-                System.out.println("\n1. Add Employee\n2. View Employees\n3. Update Employee\n4. Delete Employee\n5. View An Employee\n6. Get 3rd Highest Salary\n7. SQL Injection Demo\n8. Exit");
+                System.out.println("\n1. Add Employee\n2. View Employees\n3. Update Employee\n4. Delete Employee\n5. View An Employee\n6. Get 3rd Highest Salary\n7. SQL Injection\n8. Exit");
                 System.out.print("Choose an option: ");
                 int choice = scanner.nextInt();
                 scanner.nextLine(); 
@@ -23,9 +23,9 @@ public class SQLServerConnection {
                     case 4 -> deleteEmployee(conn, scanner);
                     case 5 -> viewSpecificEmployee(conn, scanner);
                     case 6 -> getThirdHighestSalary(conn);
-                    case 7 -> sqlInjectionDemo(conn, scanner);
+                    case 7 -> sqlInjection(conn, scanner);
                     case 8 -> {
-                        System.out.println("Exiting...");
+                        System.out.println("Exiting");
                         return;
                     }
                     default -> System.out.println("Invalid choice!");
@@ -148,11 +148,9 @@ public class SQLServerConnection {
         }
     }
 
-    static void sqlInjectionDemo(Connection conn, Scanner scanner) throws SQLException {
+    static void sqlInjection(Connection conn, Scanner scanner) throws SQLException {
         System.out.print("Enter Employee Name (unsafe input): ");
         String name = scanner.nextLine();
-
-        // WARNING: This is vulnerable to SQL Injection
         String sql = "SELECT * FROM employee_details WHERE name = '" + name + "'";
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
